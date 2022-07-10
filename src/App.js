@@ -1,90 +1,34 @@
-import React, {useState, useEffect} from "react";
-import Post from "./post";
+import React, { useState, useCallback } from "react";
 
-const App = ({initialCount}) => {
-  const [state, setState] = useState({
-    count: initialCount,
-    user: "Abdullah Ubaid",
-  });
+import Title from "./components/title";
+import Count from "./components/count";
+import CountBtn from "./components/countBtn";
+import Age from "./components/age";
+import AgeBtn from "./components/ageBtn";
 
-  let [posts, setPosts] = useState([
-    {
-      name: 'Super awesome post',
-      body: 'The content of the post'
-    },
-    {
-      name: 'JS is great',
-      body: 'Something else'
-    }
-  ])
 
-  const restOne = () => {
-    setState({
-      ...state,
-      count: state.count-1
-    })
-  }
-  
-  const addOnePost = () => {
-    let newPost = {
-      name: 'PHP is still awesome',
-      body: 'Something else'
-    }
+const App = () => {
+  const [count, setCount] = useState(0);
+  const [age, setAge] = useState(22); 
 
-    setPosts([
-      ...posts,
-      newPost
-    ])
-  }
-
-  const removePost = () => {
-    setPosts([])
-  }
-
-  useEffect(()=>{
-    // console.log('change on state')
-  }, [state]);
-
-  useEffect(()=>{
-    // console.log('change on posts')
-  }, [posts]);
-
-  useEffect(()=>{
-    // console.log('Mounted')
+  const incrementCount = useCallback(() => {
+    setCount(prevCount => prevCount + 1);
   }, []);
 
+  const incrementAge = useCallback(() => {
+    setAge(prevAge =>prevAge + 1);
+  }, []);
 
   return (
     <>
-      <h1>{state.user}</h1>
-      <h3>Count: {state.count}</h3>
-      <button onClick={()=>setState({
-        ...state,
-        count:state.count + 1
-        })}> Add One +1 </button>
-      <button onClick={restOne}> Add One -1 </button>
-      <button onClick={()=>setState({
-        ...state,
-        count: initialCount
-      })}> Reset </button>
-
-        <hr/>
-        { posts.map((item, i) => (
-          <Post key={i} item={item}/>
-        )) }
-
-        <button
-          onClick={addOnePost}
-        >
-          Add one more
-        </button>
-        <button
-          onClick={removePost}
-        >
-          Remove Post
-        </button>
+      <Title/>
+      <Count count={count}/>
+      <CountBtn handleCount={incrementCount}/>
+      <Age age={age}/>
+      <AgeBtn handleAge={incrementAge}/>
     </>
   );
+
 }
 
 export default App;
